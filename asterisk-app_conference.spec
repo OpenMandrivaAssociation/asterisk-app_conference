@@ -11,7 +11,6 @@ Source0:	app_conference-%{version}-%{snap}.tar.bz2
 Patch0:		app_conference-0.0.1-20051221-mdv_conf.diff
 BuildRequires:	asterisk-devel
 Requires:	asterisk
-Buildroot:	%{_tmppath}/%{name}-%{version}
 
 %description
 A channel-independent conference application for the Asterisk PBX.
