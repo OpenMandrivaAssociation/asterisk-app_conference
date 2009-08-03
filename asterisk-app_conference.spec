@@ -1,16 +1,17 @@
-%define snap 20051221
+%define		version 2.0.1
+%define asterisk_version 1.6.1.2
 
 Summary:	A channel-independent conference application for the Asterisk PBX
 Name:		asterisk-app_conference
-Version:	0.0.1
-Release:	%mkrel 0.%{snap}.1
+Version:	%{version}
+Release:	%mkrel %{asterisk_version}.1
 License:	GPL
 Group:		System/Servers
-URL:		http://iaxclient.sourceforge.net/
-Source0:	app_conference-%{version}-%{snap}.tar.bz2
-Patch0:		app_conference-0.0.1-20051221-mdv_conf.diff
-BuildRequires:	asterisk-devel
-Requires:	asterisk
+URL:		http://sourceforge.net/projects/appconference/
+Source0:	http://puzzle.dl.sourceforge.net/sourceforge/appconference/appconference-%{version}.tar.gz
+#Patch0:		app_conference-2.0.1-svnversion.diff
+BuildRequires:	asterisk-devel = %{asterisk_version}, subversion
+Requires:	asterisk = %{asterisk_version}
 Buildroot:	%{_tmppath}/%{name}-%{version}
 
 %description
@@ -18,29 +19,20 @@ A channel-independent conference application for the Asterisk PBX.
 
 %prep
 
-%setup -q -n app_conference
-%patch0 -p0
+%setup -q -n appconference-%{version}
+#%patch0 -p1
 
-# fix dir perms
-find . -type d | xargs chmod 755
-    
-# fix file perms
-find . -type f | xargs chmod 644
-
-# clean up CVS stuff
-for i in `find . -type d -name CVS` `find . -type f -name .cvs\*` `find . -type f -name .#\*`; do
-    if [ -e "$i" ]; then rm -r $i; fi >&/dev/null
-done
+find . -type f | xargs perl -pi -e "s|/usr/lib|%{_libdir}|g"
 
 %build
 
-%make CFLAGS="%{optflags} -pipe -Wall -fPIC -DPIC -D_REENTRANT -D_GNU_SOURCE"
+%make ASTERISK_INCLUDE_DIR="%{includedir}" CFLAGS="%{optflags} -fPIC"
 
 %install
 [ "%{buildroot}" != "/" ] && rm -rf %{buildroot}
 
-install -d %{buildroot}%{_libdir}/asterisk
-install -m0755 app_conference.so %{buildroot}%{_libdir}/asterisk/
+install -d %{buildroot}%{_prefix}%{_libdir}/asterisk/modules
+%makeinstall INSTALL_PREFIX="%{buildroot}"
 
 %clean
 [ "%{buildroot}" != "/" ] && rm -rf %{buildroot}
@@ -48,5 +40,11 @@ install -m0755 app_conference.so %{buildroot}%{_libdir}/asterisk/
 %files
 %defattr(-,root,root)
 %doc LICENSE README
-%attr(0755,root,root) %{_libdir}/asterisk/app_conference.so
+%attr(0755,root,root) %{_prefix}%{_libdir}/asterisk/modules/app_conference.so
 
+%changelog
+* Wed Feb 24 2009 Gergely Lonyai <aleph@mandriva.org> 2.0.1-1mdv2009.1
+- 2.0.1
+
+* Sun Feb 19 2006 Oden Eriksson <oeriksson@mandriva.com> 0.0.1-0.20051221.1mdk
+- initial Mandriva package
