@@ -4,7 +4,7 @@
 Summary:	A channel-independent conference application for the Asterisk PBX
 Name:		asterisk-app_conference
 Version:	%{version}
-Release:	%mkrel %{asterisk_version}.1
+Release:	%mkrel %{asterisk_version}.2
 License:	GPL
 Group:		System/Servers
 URL:		http://sourceforge.net/projects/appconference/
