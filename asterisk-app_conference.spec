@@ -7,7 +7,7 @@ Version:	%{version}
 Release:	%mkrel %{asterisk_version}.2
 License:	GPL
 Group:		System/Servers
-URL:		http://sourceforge.net/projects/appconference/
+URL:		https://sourceforge.net/projects/appconference/
 Source0:	http://puzzle.dl.sourceforge.net/sourceforge/appconference/appconference-%{version}.tar.gz
 #Patch0:		app_conference-2.0.1-svnversion.diff
 BuildRequires:	asterisk-devel = %{asterisk_version}, subversion
